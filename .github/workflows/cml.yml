@@ -1,0 +1,107 @@
+name: Train and Evaluate Model
+
+on:
+  workflow_dispatch:
+    inputs:
+      epochs:
+        description: 'Number of epochs'
+        required: true
+        default: '10'
+      batch_size:
+        description: 'Batch size'
+        required: true
+        default: '32'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install pandas scikit-learn
+
+    - name: Split data
+      run: |
+        source venv/bin/activate
+        python split_data.py
+
+    - name: Save split data
+      uses: actions/upload-artifact@v2
+      with:
+        name: split-data
+        path: |
+          beer_reviews_train.csv
+          beer_reviews_test.csv
+
+  train:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download split data
+      uses: actions/download-artifact@v2
+      with:
+        name: split-data
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install pandas tensorflow
+
+    - name: Train model
+      run: |
+        source venv/bin/activate
+        python train_model.py ${{ github.event.inputs.epochs }} ${{ github.event.inputs.batch_size }}
+
+    - name: Save model artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: model
+        path: beer_review_sentiment_model.h5
+
+  evaluate:
+    runs-on: ubuntu-latest
+    needs: train
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download model artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: model
+        path: .
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install pandas tensorflow
+
+    - name: Evaluate model
+      run: |
+        source venv/bin/activate
+        python evaluate_model.py
