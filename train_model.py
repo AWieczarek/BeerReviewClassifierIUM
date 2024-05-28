@@ -10,8 +10,8 @@ X_train = train_data[['review_aroma', 'review_appearance', 'review_palate', 'rev
 y_train = train_data['review_overall']
 
 tokenizer = Tokenizer(num_words=10000)
-tokenizer.fit_on_texts(X_train.values.ravel())
-X_train_seq = tokenizer.texts_to_sequences(X_train.values.ravel())
+tokenizer.fit_on_texts(X_train)
+X_train_seq = tokenizer.texts_to_sequences(X_train)
 
 X_train_pad = pad_sequences(X_train_seq, maxlen=100)
 
