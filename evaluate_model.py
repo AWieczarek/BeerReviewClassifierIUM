@@ -2,7 +2,7 @@ import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
-test_data = pd.read_csv('./beer_reviews_test.csv')
+test_data = pd.read_csv('beer_reviews_test.csv')
 X_test = test_data[['review_aroma', 'review_appearance', 'review_palate', 'review_taste']]
 y_test = test_data['review_overall']
 

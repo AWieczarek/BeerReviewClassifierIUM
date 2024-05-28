@@ -5,7 +5,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, GlobalAveragePooling1D, Dense
 import sys
 
-train_data = pd.read_csv('./beer_reviews_train.csv')
+train_data = pd.read_csv('beer_reviews_train.csv')
 X_train = train_data[['review_aroma', 'review_appearance', 'review_palate', 'review_taste']]
 y_train = train_data['review_overall']
 
