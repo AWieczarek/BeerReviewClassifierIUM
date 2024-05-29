@@ -75,7 +75,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: model
-        path: beer_review_sentiment_model.h5
+        path: beer_review_sentiment_model.keras
 
   evaluate:
     runs-on: ubuntu-latest
