@@ -8,7 +8,7 @@ test_data = pd.read_csv('beer_reviews_test.csv')
 X_test = test_data[['review_aroma', 'review_appearance', 'review_palate', 'review_taste']]
 y_test = test_data['review_overall']
 
-model = load_model('beer_review_sentiment_model.h5')
+model = load_model('beer_review_sentiment_model.keras')
 
 tokenizer = Tokenizer(num_words=10000)
 tokenizer.fit_on_texts(X_test)

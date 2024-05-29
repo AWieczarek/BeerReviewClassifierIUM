@@ -30,4 +30,6 @@ epochs = int(sys.argv[1])
 batch_size = int(sys.argv[2])
 model.fit(X_train_pad, y_train, epochs=epochs, batch_size=batch_size, validation_split=0.1)
 
-model.save('beer_review_sentiment_model.h5')
+model.save('beer_review_sentiment_model.keras')
+
+
